@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->integer('telefono');
+            $table->string('foto');
             $table->string('correo')->unique();
             $table->string('password');
             $table->rememberToken();
