@@ -77,7 +77,7 @@ class AccountController extends Controller
             'nombre' => 'required',
             'apellido' => 'required',
             'telefono' => 'required',
-            'foto' => 'required',
+            'foto' => 'required|sometimes',
         ]);
 
         if ($validacion->fails()) {
