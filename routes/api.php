@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegistroLoginController;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // -------------------------------------------
 // -- RUTAS API INICIO DE SESION Y REGISTRO --
 // -------------------------------------------
-Route::post('/login', [RegistroLoginController::class, 'login']);
-Route::post('/registro', [RegistroLoginController::class, 'store']);
+Route::post('/login', [AccountController::class, 'login']);
+Route::post('/registro', [AccountController::class, 'store']);
+
+// -------------------------------------------------------
+// -- RUTAS ACTUALIZAR DATOS/CORREO/PASSWORD DE USUARIO --
+// -------------------------------------------------------
+Route::put('/updateDatosUsuario/{id}', [AccountController::class, 'updateDatosUsuario']);
+Route::put('/updateCorreoUsuario/{id}', [AccountController::class, 'updateCorreoUsuario']);
+Route::put('/updatePasswordUsuario/{id}', [AccountController::class, 'updatePasswordUsuario']);

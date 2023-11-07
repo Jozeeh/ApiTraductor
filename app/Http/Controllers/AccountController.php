@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class RegistroLoginController extends Controller
+class AccountController extends Controller
 {
     //Iniciar sesión
     public function login(Request $request)
@@ -41,6 +41,7 @@ class RegistroLoginController extends Controller
             'telefono' => 'required',
             'correo' => 'required',
             'password' => 'required',
+            'tipo_usuario' => 'required',
         ]);
 
         if ($validacion->fails()) {
@@ -66,6 +67,50 @@ class RegistroLoginController extends Controller
             'telefono' => $data['telefono'],
             'correo' => $data['correo'],
             'password' => Hash::make($data['password']),
+            'tipo_usuario' => $data['tipo_usuario'],
         ]);
+    }
+
+    // Actualizar datos del usuario
+    protected function updateDatosUsuario(Request $request, $id) {
+        $validacion = Validator::make($request->all(), [
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'telefono' => 'required',
+            'foto' => 'required',
+        ]);
+
+        if ($validacion->fails()) {
+            return response()->json([
+                'code' => 400,
+                'data' => $validacion->messages()
+            ], 400);
+        } else {
+            $usuario = User::find($id);
+
+            // Guardar la imagen en el servidor
+            if ($request->hasFile('foto')) {
+                $foto = $request->file('foto');
+                $nombreArchivo = time() . '.' . $foto->getClientOriginalExtension();
+                $ruta = public_path('fotosUsuarios/' . $nombreArchivo);
+                $foto->move('fotosUsuarios', $nombreArchivo);
+
+                // Actualizar la ruta de la imagen en la base de datos
+                $usuario->foto = $nombreArchivo;
+            }
+
+            // Resto de la lógica para actualizar otros campos
+            $usuario->nombre = $request->input('nombre');
+            $usuario->apellido = $request->input('apellido');
+            $usuario->telefono = $request->input('telefono');
+
+            $usuario->save();
+
+            return response()->json([
+                'code' => 200,
+                'data' => 'Datos actualizados correctamente'
+            ], 200);
+            
+        }
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('foto');
             $table->string('correo')->unique();
             $table->string('password');
+            $table->string('tipo_usuario');
             $table->rememberToken();
             $table->timestamps();
         });
