@@ -93,68 +93,6 @@ class AccountController extends Controller
         }
     }
 
-    // Comprobamos si recibimos imagen
-    // public function updateImage(Request $request, $id){
-    //     // Validación de la imagen, si es necesario
-    //     $request->validate([
-    //         'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096', // Ajusta según tus necesidades
-    //     ]);
-
-    //     // Almacena la imagen en una carpeta dentro de public_path
-    //     $imagePath = $request->file('foto')->store('fotosUsuarios');
-
-    //     // Actualiza la ubicación de la imagen en la base de datos
-    //     // Asegúrate de tener una columna `image_path` en tu tabla
-    //     auth()->user()->update(['foto' => $imagePath]);
-
-    //     return response()->json(['message' => 'Imagen actualizada con éxito']);
-    // }
-
-    // Actualizar datos del usuario
-    // protected function updateDatosUsuario(Request $request, $id) {
-    //     $validacion = Validator::make($request->all(), [
-    //         'nombre' => 'required',
-    //         'apellido' => 'required',
-    //         'telefono' => 'required',
-    //         'foto' => 'mimes:jpeg,jpg,png,gif'
-    //     ]);
-    
-    //     if ($validacion->fails()) {
-    //         return response()->json([
-    //             'code' => 400,
-    //             'data' => $validacion->errors()
-    //         ], 400);
-    //     }
-    
-    //     $usuario = User::find($id);
-    
-    //     if ($usuario) {
-    //         $usuario->nombre = $request->nombre;
-    //         $usuario->apellido = $request->apellido;
-    //         $usuario->telefono = $request->telefono;
-    
-    //         if ($request->hasFile('foto')) {
-    //             $nombreArchivo = time().'.'.$request->foto->extension();  
-    //             $request->foto->move(public_path('fotos'), $nombreArchivo);
-    //             $usuario->foto = $nombreArchivo;
-    //         }
-    
-    //         $usuario->save();
-    
-    //         return response()->json([
-    //             'code' => 200,
-    //             'data' => $usuario
-    //         ], 200);
-    //     } else {
-    //         return response()->json([
-    //             'code' => 404,
-    //             'data' => 'No se encontró el usuario'
-    //         ], 404);
-    //     }
-    // }
-
-    // --------------------------------------------
-
     // Actualizar datos del usuario
     protected function updateDatosUsuario(Request $request, $id) {
         $validacion = Validator::make($request->all(), [
