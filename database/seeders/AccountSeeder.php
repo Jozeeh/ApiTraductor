@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AccountSeeder extends Seeder
@@ -21,7 +22,7 @@ class AccountSeeder extends Seeder
                 'nombre' => 'José',
                 'apellido' => 'Mejia',
                 'telefono' => '12345678',
-                'foto' => '/fotos-user/no-existe.png',
+                'foto' => 'imagenes/no-existe.png',
                 'tipo_usuario' => 'Usuario',
                 'correo' => 'jose@gmail.com',
                 'password' => bcrypt('itca123'),
@@ -32,7 +33,7 @@ class AccountSeeder extends Seeder
                 'nombre' => 'Juan',
                 'apellido' => 'Medina',
                 'telefono' => '12345678',
-                'foto' => '/fotos-user/no-existe.png',
+                'foto' => 'imagenes/no-existe.png',
                 'tipo_usuario' => 'Moderador',
                 'correo' => 'juan@gmail.com',
                 'password' => bcrypt('itca123'),
@@ -43,7 +44,7 @@ class AccountSeeder extends Seeder
                 'nombre' => 'Lucia',
                 'apellido' => 'Lopez',
                 'telefono' => '12345678',
-                'foto' => '/fotos-user/no-existe.png',
+                'foto' => 'imagenes/no-existe.png',
                 'tipo_usuario' => 'Administrador',
                 'correo' => 'lucia@gmail.com',
                 'password' => bcrypt('itca123'),

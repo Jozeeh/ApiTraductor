@@ -71,45 +71,141 @@ class AccountController extends Controller
         ]);
     }
 
+    // Obtener últimos datos del usuario si tiene sesión en localStorage
+    public function getDatosUsuario($id) {
+        $usuario = User::find($id);
+
+        if ($usuario) {
+            if (isset($plato->foto)) {
+                $fotoDecodificada = base64_decode($usuario->foto);
+                $usuario->foto = $fotoDecodificada;
+            }
+
+            return response()->json([
+                'code' => 200,
+                'data' => $usuario
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'data' => 'No se encontró el usuario'
+            ], 404);
+        }
+    }
+
+    // Comprobamos si recibimos imagen
+    // public function updateImage(Request $request, $id){
+    //     // Validación de la imagen, si es necesario
+    //     $request->validate([
+    //         'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096', // Ajusta según tus necesidades
+    //     ]);
+
+    //     // Almacena la imagen en una carpeta dentro de public_path
+    //     $imagePath = $request->file('foto')->store('fotosUsuarios');
+
+    //     // Actualiza la ubicación de la imagen en la base de datos
+    //     // Asegúrate de tener una columna `image_path` en tu tabla
+    //     auth()->user()->update(['foto' => $imagePath]);
+
+    //     return response()->json(['message' => 'Imagen actualizada con éxito']);
+    // }
+
+    // Actualizar datos del usuario
+    // protected function updateDatosUsuario(Request $request, $id) {
+    //     $validacion = Validator::make($request->all(), [
+    //         'nombre' => 'required',
+    //         'apellido' => 'required',
+    //         'telefono' => 'required',
+    //         'foto' => 'mimes:jpeg,jpg,png,gif'
+    //     ]);
+    
+    //     if ($validacion->fails()) {
+    //         return response()->json([
+    //             'code' => 400,
+    //             'data' => $validacion->errors()
+    //         ], 400);
+    //     }
+    
+    //     $usuario = User::find($id);
+    
+    //     if ($usuario) {
+    //         $usuario->nombre = $request->nombre;
+    //         $usuario->apellido = $request->apellido;
+    //         $usuario->telefono = $request->telefono;
+    
+    //         if ($request->hasFile('foto')) {
+    //             $nombreArchivo = time().'.'.$request->foto->extension();  
+    //             $request->foto->move(public_path('fotos'), $nombreArchivo);
+    //             $usuario->foto = $nombreArchivo;
+    //         }
+    
+    //         $usuario->save();
+    
+    //         return response()->json([
+    //             'code' => 200,
+    //             'data' => $usuario
+    //         ], 200);
+    //     } else {
+    //         return response()->json([
+    //             'code' => 404,
+    //             'data' => 'No se encontró el usuario'
+    //         ], 404);
+    //     }
+    // }
+
+    // --------------------------------------------
+
     // Actualizar datos del usuario
     protected function updateDatosUsuario(Request $request, $id) {
         $validacion = Validator::make($request->all(), [
             'nombre' => 'required',
             'apellido' => 'required',
             'telefono' => 'required',
-            'foto' => 'required|sometimes',
+            'foto' => 'sometimes',
         ]);
 
         if ($validacion->fails()) {
             return response()->json([
                 'code' => 400,
-                'data' => $validacion->messages()
+                'data' => $validacion->messages(),
             ], 400);
         } else {
             $usuario = User::find($id);
 
-            // Guardar la imagen en el servidor
-            if ($request->hasFile('foto')) {
-                $foto = $request->file('foto');
-                $nombreArchivo = time() . '.' . $foto->getClientOriginalExtension();
-                $ruta = public_path('fotosUsuarios/' . $nombreArchivo);
-                $foto->move('fotosUsuarios', $nombreArchivo);
+            if ($usuario) {
 
-                // Actualizar la ruta de la imagen en la base de datos
-                $usuario->foto = $nombreArchivo;
+                if ($request->has('foto')) {
+                    //Guardar la nueva imagen
+                    $fotoUsuario = $request->input('foto');
+                    $imagenCodificada = base64_encode(file_get_contents($fotoUsuario));
+
+                    //Actualiza la información del usuario, incluyendo la nueva imagen codificada
+                    $usuario->update([
+                        'nombre' => $request->input('nombre'),
+                        'apellido' => $request->input('apellido'),
+                        'telefono' => $request->input('telefono'),
+                        'foto' => $imagenCodificada
+                    ]);
+                } else{
+                    //Actualiza la información del usuario, sin incluir la nueva imagen codificada
+                    $usuario->update([
+                        'nombre' => $request->input('nombre'),
+                        'apellido' => $request->input('apellido'),
+                        'telefono' => $request->input('telefono'),
+                    ]);
+                }
+
+                return response()->json([
+                    'code' => 200,
+                    'data' => $usuario
+                ], 200);
+
+            } else {
+                return response()->json([
+                    'code' => 404,
+                    'data' => 'Registro para actualizar no encontrado'
+                ], 404);
             }
-
-            // Resto de la lógica para actualizar otros campos
-            $usuario->nombre = $request->input('nombre');
-            $usuario->apellido = $request->input('apellido');
-            $usuario->telefono = $request->input('telefono');
-
-            $usuario->save();
-
-            return response()->json([
-                'code' => 200,
-                'data' => 'Datos actualizados correctamente'
-            ], 200);
             
         }
     }

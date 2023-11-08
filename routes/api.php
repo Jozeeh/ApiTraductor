@@ -25,6 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/registro', [AccountController::class, 'store']);
 
+// ------------------------------
+// -- OBTENER DATOS DE USUARIO --
+// ------------------------------
+Route::get('/getDatosUsuario/{id}', [AccountController::class, 'getDatosUsuario']);
+
 // -------------------------------------------------------
 // -- RUTAS ACTUALIZAR DATOS/CORREO/PASSWORD DE USUARIO --
 // -------------------------------------------------------
