@@ -147,4 +147,67 @@ class AccountController extends Controller
             
         }
     }
+
+    // Actualizar correo del usuario
+    public function updateCorreoUsuario(Request $request, $id){
+        $usuario = User::find($id);
+        if ($usuario) {
+            $usuario->update([
+                'correo' => $request->input('correo')
+            ]);
+
+            return response()->json([
+                'code' => 200,
+                'data' => 'Correo actualizado!'
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'data' => 'Registro para actualizar no encontrado'
+            ], 404);
+        }
+    }
+
+    // Actualizar contraseña del usuario
+    public function updatePasswordUsuario(Request $request, $id){
+        $validacion = Validator::make($request->all(), [
+            'correo' => 'required',
+            'password' => 'required',
+            'newPassword' => 'required'
+        ]);
+    
+        if ($validacion->fails()) {
+            return response()->json([
+                'code' => 400,
+                'data' => $validacion->errors()
+            ], 400);
+        }
+    
+        $credentials = $request->only('correo', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            $usuario = User::find($id);
+    
+            if ($usuario) {
+                $usuario->password = bcrypt($request->input('newPassword'));
+                $usuario->save();
+    
+                return response()->json([
+                    'code' => 200,
+                    'data' => 'Contraseña actualizada correctamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'code' => 404,
+                    'data' => 'No se encontró el usuario'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'code' => 401,
+                'data' => 'Contraseña incorrecta'
+            ], 401);
+        }
+    }
+
 }
