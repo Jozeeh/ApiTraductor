@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\FavoritosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,9 @@ Route::get('/getDatosUsuario/{id}', [AccountController::class, 'getDatosUsuario'
 Route::put('/updateDatosUsuario/{id}', [AccountController::class, 'updateDatosUsuario']);
 Route::put('/updateCorreoUsuario/{id}', [AccountController::class, 'updateCorreoUsuario']);
 Route::put('/updatePasswordUsuario/{id}', [AccountController::class, 'updatePasswordUsuario']);
+
+// -------------------------------------------------------
+// -- RUTAS PARA ALMACENAR PALABRA FAVORITA EN LA BASE  --
+// -------------------------------------------------------
+Route::post('/registrarPalabra', [FavoritosController::class, 'store']);
+Route::get('/mostrarPalabra', [FavoritosController::class, 'mostrarPalabra']);
