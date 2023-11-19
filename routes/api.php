@@ -37,7 +37,6 @@ Route::middleware('auth:sanctum')->group(function (){
     // -------------------------------------------------------
     Route::put('/updateDatosUsuario/{id}', [AccountController::class, 'updateDatosUsuario']);
     Route::put('/updateCorreoUsuario/{id}', [AccountController::class, 'updateCorreoUsuario']);
-    Route::put('/updatePasswordUsuario/{id}', [AccountController::class, 'updatePasswordUsuario']);
 
     // -------------------------------------------------------
     // -- RUTAS PARA ALMACENAR PALABRA FAVORITA EN LA BASE  --
@@ -47,3 +46,4 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('/eliminarFavorito/{id}', [FavoritosController::class, 'eliminarFavorito']);
  });
 
+ Route::put('/updatePasswordUsuario/{id}', [AccountController::class, 'updatePasswordUsuario']);
