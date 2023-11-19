@@ -17,7 +17,7 @@ class AccountController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('MyApp')->accessToken;
+            $token = $user->createToken('token')->plainTextToken;
             return response()->json([
                 'token' => $token,
                 'data' => $user
