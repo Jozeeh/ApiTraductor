@@ -33,4 +33,22 @@ class FavoritosController extends Controller
             return response()->json(['message' => 'Hubo un error al mostrar la palabra favorita: ' . $e->getMessage()], 500);
         }
     }
+        
+
+    public function eliminarFavorito($id){
+        try {
+            $favorito = FavoritosModel::find($id);
+            
+            if (!$favorito) {
+                return response()->json(['message' => 'No se encontró el favorito'], 404);
+            }
+            
+            $favorito->delete();
+            
+            return response()->json(['message' => 'Favorito eliminado con éxito']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Hubo un error al eliminar el favorito: ' . $e->getMessage()], 500);
+        }
+    }
+
 }

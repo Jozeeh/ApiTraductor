@@ -43,3 +43,4 @@ Route::put('/updatePasswordUsuario/{id}', [AccountController::class, 'updatePass
 // -------------------------------------------------------
 Route::post('/registrarPalabra', [FavoritosController::class, 'store']);
 Route::get('/mostrarPalabra', [FavoritosController::class, 'mostrarPalabra']);
+Route::delete('/eliminarFavorito/{id}', [FavoritosController::class, 'eliminarFavorito']);
